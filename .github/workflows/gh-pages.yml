@@ -18,18 +18,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # If your site needs a build step (e.g., using a static site generator),
-      # add install/build steps here. Example:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v3
+
+      # If you have a build step, add it here and set `path` below to the build output.
+      # Example:
       # - name: Install
       #   run: npm ci
       # - name: Build
       #   run: npm run build
-      # and set `path` below to the build output folder (e.g., ./dist or ./public)
 
       - name: Upload artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
+      - name: Show deployed URL
+        run: echo "Page URL: ${{ steps.deployment.outputs.page_url }}"
